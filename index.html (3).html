@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Wedding of Yash & Nikita 💍</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --gold: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            --royal-red: #660000;
+            --cream: #fffef0;
+            --lines: #e0e0e0;
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100vh; width: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: #0f0f0f; overflow: hidden; font-family: 'Poppins', sans-serif;
+            perspective: 1500px;
+        }
+
+        .notebook {
+            width: 340px; height: 500px; position: relative;
+            transform-style: preserve-3d; transition: transform 0.8s;
+        }
+
+        .page {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            background: var(--cream); border-radius: 5px 15px 15px 5px;
+            box-shadow: 5px 5px 25px rgba(0,0,0,0.7);
+            display: none; flex-direction: column; align-items: center;
+            padding: 30px; box-sizing: border-box; color: #333;
+            transform-origin: left; border: 1px solid #c5a059;
+        }
+
+        .active-page { display: flex; animation: flipPage 0.8s ease-in-out forwards; }
+
+        @keyframes flipPage {
+            from { transform: rotateY(-90deg); opacity: 0; }
+            to { transform: rotateY(0deg); opacity: 1; }
+        }
+
+        #coverPage {
+            background: var(--royal-red);
+            color: #fcf6ba; border: 4px solid #b38728;
+            justify-content: center; text-align: center;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.5);
+        }
+        .cover-title { font-family: 'Dancing Script', cursive; font-size: 2.2rem; margin: 15px 0; }
+
+        .notebook-lines {
+            background-image: linear-gradient(var(--lines) 1px, transparent 1px);
+            background-size: 100% 30px; padding-left: 50px; text-align: left;
+        }
+        .notebook-lines::before {
+            content: ''; position: absolute; left: 40px; top: 0; bottom: 0;
+            width: 2px; background: #d4af37;
+        }
+
+        .gift-container {
+            cursor: pointer; position: relative;
+            width: 150px; height: 150px; margin-top: 50px;
+            transition: transform 0.3s;
+        }
+        .gift-container:hover { transform: scale(1.1) rotate(5deg); }
+        .gift-box { font-size: 100px; text-align: center; }
+        
+        .tag { padding: 12px; border-radius: 25px; margin: 8px 0; width: 90%; cursor: pointer; color: white; font-weight: bold; background: #444; text-align:center; transition: 0.3s; }
+        
+        .nav-btn { background: var(--royal-red); color: #fcf6ba; border: 1px solid #b38728; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: auto; font-weight: bold; }
+        .dancing { font-family: 'Dancing Script', cursive; color: #800000; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .shaking { animation: pulse 0.5s infinite; }
+        .colorful-name { animation: colorShift 3s infinite; font-weight: bold; }
+        @keyframes colorShift { 0% { color: #b38728; } 50% { color: #800000; } 100% { color: #b38728; } }
+    </style>
+</head>
+<body>
+
+    <div class="notebook">
+        <div class="page active-page" id="page0">
+            <div id="coverPage" style="width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; border-radius: 5px 15px 15px 5px;">
+                <p style="font-size: 0.9rem; letter-spacing: 4px;">OUR WEDDING DIARY</p>
+                <h1 class="cover-title">Yash & Nikita</h1>
+                <div style="font-size: 40px;">💍✨</div>
+                <p style="margin-top: 40px; font-size: 0.7rem; opacity: 0.8; padding: 0 20px;">Hamesha Ke Liye Ek Hone Ka Safar</p>
+                <button class="nav-btn" onclick="flipTo(1)" style="background: var(--gold); color: #4b360b; margin-top: 20px;">OPEN OUR STORY</button>
+            </div>
+        </div>
+
+        <div class="page notebook-lines" id="page1">
+            <h2 class="dancing">The Beginning...</h2>
+            <p>Nikita, hold the ring to enter our world...</p>
+            <div class="heart-btn" id="heartBtn" style="font-size: 80px; cursor:pointer; margin: 20px 0;">💍</div>
+            <div class="progress-container" style="width:100%; text-align:center;">
+                <div id="progressBar" style="width: 0%; height: 8px; background: var(--gold); border-radius: 10px; transition: 0.1s;"></div>
+                <p style="font-size: 0.7rem; color: #888; margin-top: 10px;">HOLD TO UNLOCK FOREVER</p>
+            </div>
+        </div>
+
+        <div class="page notebook-lines" id="page2">
+            <h2 class="dancing">Pavitra Bandhan</h2>
+            <p>In buri cheezon ko zindagi se hata do:</p>
+            <div class="tag" onclick="removeTag(this)">❌ Gham (Sadness)</div>
+            <div class="tag" onclick="removeTag(this)">❌ Doori (Distance)</div>
+            <div class="tag" onclick="removeTag(this)">❌ Galat-fehmi (Doubts)</div>
+            <div class="tag" onclick="removeTag(this)">❌ Aansu (Tears)</div>
+        </div>
+
+        <div class="page notebook-lines" id="pageGift">
+            <h2 class="dancing">A Surprise for You!</h2>
+            <p>Nikita, tap the box for a surprise...</p>
+            <div class="gift-container shaking" id="giftBox" onclick="openGift()">
+                <div class="gift-box">🎁</div>
+            </div>
+            <p id="giftHint" style="margin-top:20px; font-weight:bold; color:#b38728; display:none; text-align:center;">💥 DHAMAKA! 💥</p>
+        </div>
+
+        <div class="page notebook-lines" id="page4">
+            <div id="letterContent" style="flex:1">
+                <h3 class="dancing" id="ltTitle">Humari Shadi ❤️</h3>
+                <p id="ltText" style="font-family: 'Dancing Script', cursive; font-size: 1.2rem; line-height: 28px;">
+                    Nikita, aaj se mera har din tumhara hai. Yash tumhara hath hamesha ke liye pakad raha hai.
+                </p>
+            </div>
+            <div class="page-nav" style="width: 100%; display: flex; justify-content: space-between;">
+                <button class="nav-btn" id="prevBtn" style="background:#ccc; display:none;" onclick="changeLetter(-1)">Back</button>
+                <button class="nav-btn" id="nextBtn" onclick="changeLetter(1)">Next Promise</button>
+            </div>
+        </div>
+
+        <div class="page" id="page5" style="background: #fffef0; justify-content: center; text-align: center; border: 4px double #b38728;">
+            <div style="font-size: 50px;">🏠❤️</div>
+            <h1 class="dancing" style="font-size: 2.2rem;">Yash Weds Nikita</h1>
+            <p style="font-size: 1rem; line-height: 1.6;">
+                Nayi shuruat, naye sapne, aur wahi purana pyaar.<br>
+                <strong>Thank you Nikita</strong> for being my life partner.
+            </p>
+            <div style="font-size: 30px; margin-top: 20px; animation: pulse 1s infinite;">💍👨‍⚖️👰✨</div>
+            <p style="margin-top: 30px; font-size: 0.8rem; color: #800000; letter-spacing: 2px;">TILL DEATH DO US PART</p>
+        </div>
+    </div>
+
+    <script>
+        function flipTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            const target = (typeof pageId === 'number') ? 'page' + pageId : pageId;
+            document.getElementById(target).classList.add('active-page');
+        }
+
+        // Page 1: Unlock Logic
+        const heartBtn = document.getElementById('heartBtn');
+        let progress = 0, timer;
+        heartBtn.addEventListener('pointerdown', () => {
+            timer = setInterval(() => {
+                progress += 2;
+                document.getElementById('progressBar').style.width = progress + "%";
+                if(progress >= 100) { clearInterval(timer); flipTo(2); }
+            }, 30);
+        });
+        window.addEventListener('pointerup', () => { 
+            clearInterval(timer); if(progress<100){ progress=0; document.getElementById('progressBar').style.width="0%";} 
+        });
+
+        // Page 2: Tags Logic
+        let removed = 0;
+        function removeTag(el) {
+            el.style.opacity = "0";
+            el.style.transform = "scale(0)";
+            setTimeout(() => { el.style.display = 'none'; }, 300);
+            removed++;
+            if(removed === 4) setTimeout(() => flipTo('pageGift'), 500);
+        }
+
+        // Gift Opening: Direct to Letters
+        function openGift() {
+            const gift = document.getElementById('giftBox');
+            gift.innerHTML = "💥";
+            gift.classList.remove('shaking');
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff0000', '#ffd700', '#ffffff']
+            });
+            setTimeout(() => {
+                gift.style.fontSize = "120px";
+                gift.innerHTML = "✨💖✨";
+                document.getElementById('giftHint').style.display = "block";
+                // Redirecting to Page 4 (Letters) after 1.5s
+                setTimeout(() => flipTo(4), 1500);
+            }, 500);
+        }
+
+        // Letters Logic
+        let letterStep = 1;
+        function changeLetter(dir) {
+            letterStep += dir;
+            const title = document.getElementById('ltTitle');
+            const text = document.getElementById('ltText');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nikita = '<span class="colorful-name">Nikita</span>';
+
+            prevBtn.style.display = letterStep > 1 ? 'block' : 'none';
+
+            if(letterStep === 1) {
+                title.innerText = "Humari Shadi ❤️";
+                text.innerHTML = `Mera har din aur har saans ab tumhare liye hai ${nikita}. Yash ka vada hai ki wo hamesha tumhara dhaal banke rahega.`;
+            } else if(letterStep === 2) {
+                title.innerText = "Sath Phere ✨";
+                text.innerHTML = `વહાલી ${nikita}, તારા આવવાથી મારુ ઘર અને જીવન બંને મહેકી ઉઠ્યા છે. હું વચન આપું છું કે આપણો સાથ સાત જન્મો સુધી અકબંધ રહેશે. ❤️💍`;
+            } else if(letterStep === 3) {
+                title.innerText = "Life Long Promise 💍";
+                text.innerHTML = `To my beautiful wife ${nikita}, this is not just a card, it's a piece of my heart. I love you more than words can say.`;
+                nextBtn.innerText = "Complete Wedding ➔";
+            } else {
+                flipTo(5);
+            }
+        }
+    </script>
+</body>
+</html>
